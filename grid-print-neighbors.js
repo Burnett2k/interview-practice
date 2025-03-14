@@ -1,4 +1,4 @@
-// print the value of adjacent neighbors of a target grid
+// print the value of adjacent neighbors (left, right, above, and below) of a target grid. Not diaganol.
 // if the neighbor is out of bounds, return a -1
 
 // grid = 2 dimensional array / grid
@@ -20,36 +20,6 @@ const printNeighbors = (grid, target) => {
 
     console.log(`direction ${direction} is ${value}`);
   }
-
-  //   console.log(`seeking neighbors of ${target}`);
-  //   console.log(
-  //     `up = ${
-  //       withinRange(grid, [target[0] - 1, target[1]])
-  //         ? grid[target[0] - 1][target[1]]
-  //         : -1
-  //     }`
-  //   );
-  //   console.log(
-  //     `left = ${
-  //       withinRange(grid, [target[0], target[1] - 1])
-  //         ? grid[target[0]][target[1] - 1]
-  //         : -1
-  //     }`
-  //   );
-  //   console.log(
-  //     `right = ${
-  //       withinRange(grid, [target[0], target[1] + 1])
-  //         ? grid[target[0]][target[1] + 1]
-  //         : -1
-  //     }`
-  //   );
-  //   console.log(
-  //     `down = ${
-  //       withinRange(grid, [target[0] + 1, target[1]])
-  //         ? grid[target[0] + 1][target[1]]
-  //         : -1
-  //     }`
-  //   );
 };
 
 const withinRange = (grid, row, col) => {
