@@ -7,30 +7,42 @@ const grid = [
   [13, 14, 15, 16],
 ];
 
-const walkGridBoundary = (grid, startRow, startCol, rows, cols) => {
-  if (rows <= 0 || cols <= 0) return; /// base case to exit the loop
-
-  // loop through first row
-  for (let i = 0; i < cols; i++) {
-    traversePath.push(grid[startRow][startCol + i]);
-  }
-  // loop down
-  for (let i = 1; i < rows; i++) {
-    console.log(i);
-    traversePath.push(grid[startRow + i][startCol + cols - 1]);
-  }
-  for (let i = cols - 2; i >= 0; i--) {
-    traversePath.push(grid[startRow + rows - 1][startCol + i]);
-  }
-  for (let i = rows - 2; i >= 1; i--) {
-    traversePath.push(grid[startRow + i][startCol]);
-  }
-  walkGridBoundary(grid, startRow + 1, startCol + 1, rows - 2, cols - 2);
-};
-
-let startRow = 0;
-let startCol = 0;
 let traversePath = [];
 
-walkGridBoundary(grid, 0, 0, grid.length, grid[0].length);
+const walkGridBoundary = (grid, startRow, startCol, rows, cols) => {
+  console.log(
+    `Processing boundary: startRow=${startRow}, startCol=${startCol}, rows=${rows}, cols=${cols}`
+  );
+
+  // walk right
+  for (let i = startCol; i < startCol + cols - 1; i++) {
+    traversePath.push(grid[startRow][i]);
+  }
+  // walk down
+  for (let i = startRow; i < startRow + rows - 1; i++) {
+    traversePath.push(grid[i][startCol + cols - 1]);
+  }
+  // walk left
+  for (let i = startCol + cols - 1; i > startCol; i--) {
+    traversePath.push(grid[startRow + rows - 1][i]);
+  }
+  // walk up
+  for (let i = startRow + rows - 1; i > startRow; i--) {
+    traversePath.push(grid[i][startCol]);
+  }
+};
+
+let startCol = 0;
+let startRow = 0;
+let rows = grid.length;
+let cols = grid[0].length;
+
+while (rows > 0 && cols > 0) {
+  walkGridBoundary(grid, startRow, startCol, rows, cols);
+  startCol++; // 0 => 1
+  startRow++; // 0 => 1
+  rows -= 2; // 4 => 2
+  cols -= 2; // 4 => 2
+}
+
 console.log(traversePath);
