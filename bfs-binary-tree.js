@@ -17,7 +17,11 @@ class TreeNode {
     this.right = right;
   }
 }
-
+//     1
+//    / \
+//   2   3
+//  / \   \
+// 4   5   6
 // Test case
 const root = new TreeNode(
   1,
@@ -27,22 +31,29 @@ const root = new TreeNode(
 
 const bfsTraversal = (root) => {
   const queue = [root];
-  const levels = [];
+  const paths = [];
+  // don't need visited because it is a directed graph??
+  // how do I make it an array of levels instead?
 
-  while (queue.length > 0) {
-    const levelSize = queue.length;
+  while (queue.length) {
+    // get snapshot of the items in the queue (represents number of items in that level);
+    const levelSnapshot = queue.length;
     const levelNodes = [];
 
-    for (let i = 0; i < levelSize; i++) {
+    for (let i = 0; i < levelSnapshot; i++) {
       const node = queue.shift();
       levelNodes.push(node.val);
 
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
     }
-    levels.push(levelNodes);
+    paths.push(levelNodes);
   }
-  return levels;
+  return paths;
 };
 
 console.log(bfsTraversal(root));

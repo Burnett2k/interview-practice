@@ -30,25 +30,27 @@ const graph = {
 // Expected output: [1, 2, 3, 4, 5, 6]
 
 const adjacencyList = (graph, start) => {
-  let queue = [start];
+  // use queue to store order of traversal
+  const queue = [start];
+  // define the output
+  const path = [];
+  // store visited so we don't have an endless loop
   const visited = new Set();
-  const result = [];
 
-  while (queue.length > 0) {
-    const node = queue.shift();
-
+  while (queue.length) {
+    const node = queue.shift(); // take item to traverse
     if (!visited.has(node)) {
       visited.add(node);
-      result.push(node);
+      path.push(node);
+    }
 
-      for (let neighbor of graph[node]) {
-        if (!visited.has(neighbor)) {
-          queue.push(neighbor);
-        }
-      }
+    // get child elements and add to queue for traversal
+    for (let i = 0; i < graph[node].length; i++) {
+      if (!visited.has(graph[node][i])) queue.push(graph[node][i]);
     }
   }
-  return result;
+
+  return path;
 };
 
 console.log(adjacencyList(graph, 1));
