@@ -26,7 +26,7 @@ const outerFunction = (grid, x, y) => {
       y < 0 ||
       visited.has(`${x}-${y}`)
     ) {
-      // we are out of bounds. THis should be inverted since we don't do anything when we are out of bounds
+      console.log("we found water, an invalid boundary, or whatevs");
     } else {
       visited.add(`${x}-${y}`);
       console.log(`visiting ${x}-${y}`);
