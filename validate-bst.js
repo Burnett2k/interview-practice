@@ -1,17 +1,10 @@
 const TreeNode = require("./tree-node");
 
 const validate = (root) => {
-  let prev = null;
-  const dfs = (root) => {
-    // a valid BST will return values in ascending order if we do a in-order traversal
+  const dfs = (root, min = Number.MIN_VALUE, max = Number.MAX_VALUE) => {
     if (!root) return true;
-    console.log(root.val);
-    // if previous value is >= current value return false
-    if (!dfs(root.left)) return false;
-    if (prev !== null && prev > root.val) return false;
-    prev = root.val;
-    if (!dfs(root.right)) return false;
-    return true;
+    if (root.val >= max || root.val <= min) return false;
+    return dfs(root.left, min, root.val) && dfs(root.right, root.val, max);
   };
   return dfs(root);
 };
