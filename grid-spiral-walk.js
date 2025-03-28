@@ -1,4 +1,5 @@
-// write a function that prints all the boundary elements of an n x m grid, moving clockwise starting from top left corner (0,0)
+// 54. Spiral Matrix
+// Given an m x n matrix, return all elements of the matrix in spiral order.
 
 const grid = [
   [1, 2, 3, 4],
@@ -7,42 +8,53 @@ const grid = [
   [13, 14, 15, 16],
 ];
 
-let traversePath = [];
+/**
+ * @param {number[][]} grid
+ * @return {number[]}
+ */
+var spiralOrder = function (grid) {
+  const path = [];
+  let top = 0;
+  let right = grid[0].length - 1;
+  let bottom = grid.length - 1;
+  let left = 0;
 
-const walkGridBoundary = (grid, startRow, startCol, rows, cols) => {
-  console.log(
-    `Processing boundary: startRow=${startRow}, startCol=${startCol}, rows=${rows}, cols=${cols}`
-  );
+  console.log(top, right, bottom, left);
 
-  // walk right
-  for (let i = startCol; i < startCol + cols - 1; i++) {
-    traversePath.push(grid[startRow][i]);
+  // outer while loop
+  while (top <= bottom && left <= right) {
+    // keep going until coordinates intersect
+
+    // walk top
+    for (let i = left; i <= right; i++) {
+      path.push(grid[top][i]);
+    }
+    top++;
+    for (let i = top; i <= bottom; i++) {
+      path.push(grid[i][right]);
+    }
+    right--;
+    for (let i = right; i >= left; i--) {
+      path.push(grid[bottom][i]);
+    }
+    bottom--;
+    for (let i = bottom; i >= top; i--) {
+      path.push(grid[i][left]);
+    }
+    left++;
+    // walk right
+    // walk bottom
+    // walk left
   }
-  // walk down
-  for (let i = startRow; i < startRow + rows - 1; i++) {
-    traversePath.push(grid[i][startCol + cols - 1]);
-  }
-  // walk left
-  for (let i = startCol + cols - 1; i > startCol; i--) {
-    traversePath.push(grid[startRow + rows - 1][i]);
-  }
-  // walk up
-  for (let i = startRow + rows - 1; i > startRow; i--) {
-    traversePath.push(grid[i][startCol]);
-  }
+
+  return path;
 };
 
-let startCol = 0;
-let startRow = 0;
-let rows = grid.length;
-let cols = grid[0].length;
+// const grid = [
+//   [1, 2, 3, 4],
+//   [5, 6, 7, 8],
+//   [9, 10, 11, 12],
+//   [13, 14, 15, 16],
+// ];
 
-while (rows > 0 && cols > 0) {
-  walkGridBoundary(grid, startRow, startCol, rows, cols);
-  startCol++; // 0 => 1
-  startRow++; // 0 => 1
-  rows -= 2; // 4 => 2
-  cols -= 2; // 4 => 2
-}
-
-console.log(traversePath);
+console.log(spiralOrder(grid));
