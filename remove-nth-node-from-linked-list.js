@@ -18,30 +18,26 @@ const { LinkedList, LinkedNode } = require("./linked-list");
 // Output: [1]
 
 var removeNthFromEnd = function (head, n) {
-  let curr = head;
-  let totalItems = 0;
-  while (curr) {
-    totalItems++;
-    curr = curr.next;
-  }
-  console.log(totalItems);
-  console.log("index is ", totalItems - n);
+  let dummy = new LinkedNode(0);
+  dummy.next = head;
+  let left = dummy;
+  right = head;
 
-  if (totalItems === n) {
-    return head.next;
+  // shift right pointer by n
+  while (n > 0 && right) {
+    right = right.next;
+    n -= 1;
   }
 
-  let i = 0;
-  curr = head;
-  while (curr) {
-    i++;
-    if (i === totalItems - n) {
-      curr.next = curr.next ? curr.next.next : null;
-      break;
-    }
-    curr = curr.next;
+  // shift left pointer to end of list
+  while (right) {
+    left = left.next;
+    right = right.next;
   }
-  return head;
+
+  // now we can remove the middle guy
+  left.next = left.next.next;
+  return dummy.next;
 };
 
 // Constraints:

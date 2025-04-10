@@ -9,8 +9,8 @@ class LinkedNode {
 }
 
 class LinkedList {
-  constructor() {
-    this.head = null;
+  constructor(head = null) {
+    this.head = head;
     this.next = null;
   }
 
