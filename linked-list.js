@@ -61,13 +61,4 @@ class LinkedList {
   }
 }
 
-const n1 = new LinkedNode(1);
-const n2 = new LinkedNode(2);
-const n3 = new LinkedNode(3);
-const list = new LinkedList();
-list.append(n1);
-list.append(n2);
-list.append(n3);
-console.log(list.print());
-list.reverse();
-console.log(list.print());
+module.exports = { LinkedNode, LinkedList };
