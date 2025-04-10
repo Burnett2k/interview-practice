@@ -56,5 +56,4 @@ list.append(n1);
 list.append(n2);
 list.append(n3);
 console.log(list.print());
-list.reverse();
-console.log(list.print());
+console.log(reverseList(n1));
