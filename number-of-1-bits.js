@@ -1,4 +1,4 @@
-const hammingWeight = (num) => {
+const hammingWeightNaive = (num) => {
   let result = "";
   let weight = 0;
   // how do I elegantly handle the base case of 0? Just return early?
@@ -17,7 +17,21 @@ const hammingWeight = (num) => {
   return weight;
 };
 
-console.log(hammingWeight(0)); // 0
-console.log(hammingWeight(1)); // 1
-console.log(hammingWeight(2)); // 1
-console.log(hammingWeight(30)); // 4
+const hammingWeightSimpler = (num) => {
+  // space complexity? constant since just one variable
+  // time complexity O(log n) because it halves the number each time?
+  let weight = 0;
+  // how do I elegantly handle the base case of 0? Just return early?
+  while (num >= 0) {
+    if (num % 2 === 1) weight++;
+    num = Math.floor(num / 2);
+    if (num === 0) break;
+  }
+
+  return weight;
+};
+
+console.log(hammingWeightSimpler(0)); // 0
+console.log(hammingWeightSimpler(1)); // 1
+console.log(hammingWeightSimpler(2)); // 1
+console.log(hammingWeightSimpler(30)); // 4
