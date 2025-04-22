@@ -34,8 +34,44 @@ function validTree(n, edges) {
   return visited.size === n;
 }
 
+function validTreeBfs(n, edges) {
+  // need to create a queue
+
+  const adjList = new Map();
+  const visited = new Set();
+  for (let i = 0; i < n; i++) {
+    adjList.set(i, []);
+  }
+  for (const [a, b] of edges) {
+    // needs to go both ways here
+    adjList.get(a).push(b);
+    adjList.get(b).push(a);
+  }
+
+  let queue = [[0, -1]];
+  let parent = 0;
+
+  while (queue.length) {
+    const queueSize = queue.length;
+    const [node, parent] = queue.shift();
+
+    if (visited.has(node)) {
+      return false;
+    }
+
+    visited.add(node);
+
+    for (const neighbor of adjList.get(node)) {
+      if (neighbor === parent) continue;
+      queue.push([neighbor, node]);
+    }
+  }
+
+  return visited.size === n;
+}
+
 console.log(
-  validTree(5, [
+  validTreeBfs(5, [
     [0, 1],
     [0, 2],
     [0, 3],
@@ -43,7 +79,7 @@ console.log(
   ])
 ); // true
 console.log(
-  validTree(5, [
+  validTreeBfs(5, [
     [0, 1],
     [1, 2],
     [2, 3],
@@ -52,9 +88,9 @@ console.log(
   ])
 ); // false (cycle)
 console.log(
-  validTree(4, [
+  validTreeBfs(4, [
     [0, 1],
     [2, 3],
   ])
 ); // false (disconnected)
-console.log(validTree(1, [])); // true (single node)
+console.log(validTreeBfs(1, [])); // true (single node)
