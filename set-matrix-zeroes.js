@@ -11,23 +11,44 @@ var setZeroes = function (matrix) {
   // iterate over them and set all the rows and cols to 0 associated to each one!
   let zeros = [];
 
+  const setRow = (row, col) => {
+    for (let j = 0; j < matrix[0].length; j++) {
+      if (matrix[row][j] > 0) {
+        matrix[row][j] = 0;
+      }
+    }
+  };
+  const setCol = (row, col) => {
+    for (let j = 0; j < matrix.length; j++) {
+      // don't set -1 to zero until final pass
+      if (matrix[j][col] > 0) {
+        matrix[j][col] = 0;
+      }
+    }
+  };
+
   for (let row = 0; row < matrix.length; row++) {
     for (let col = 0; col < matrix[0].length; col++) {
       if (matrix[row][col] === 0) {
-        zeros.push([row, col]);
+        matrix[row][col] = -1;
       }
     }
   }
 
-  for (const [row, col] of zeros) {
-    console.log(row);
-    // set row to zeros
-    for (let j = 0; j < matrix[0].length; j++) {
-      matrix[row][j] = 0;
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[0].length; col++) {
+      if (matrix[row][col] === -1) {
+        setRow(row, col);
+        setCol(row, col);
+      }
     }
-    // set col to zeros
-    for (let j = 0; j < matrix.length; j++) {
-      matrix[j][col] = 0;
+  }
+
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[0].length; col++) {
+      if (matrix[row][col] === -1) {
+        matrix[row][col] = 0;
+      }
     }
   }
 
