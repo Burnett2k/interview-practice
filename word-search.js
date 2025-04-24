@@ -4,41 +4,43 @@
 // where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
 
 const wordSearch = (grid, word) => {
-  const rows = grid.length;
-  const columns = grid.length;
-  let visited = new Set();
+  console.log("word is: ", word);
+  const visited = new Set();
 
-  const dfs = (i, j, letterIndex) => {
-    if (letterIndex === word.length) return true;
-    const coords = `${i}-${j}`;
+  const dfs = (row, col, i) => {
+    // base case: out of bounds
+    // matching letter, etc
+    // reset currentLetterIndex if match not found
     if (
-      i < 0 ||
-      j < 0 ||
-      i >= rows ||
-      j >= columns ||
-      grid[i][j] !== word[letterIndex] ||
-      visited.has(coords)
-    )
+      withinBounds(row, col) &&
+      word[i] === grid[row][col] &&
+      !visited.has(`${row}-${col}`)
+    ) {
+      visited.add(`${row}-${col}`);
+
+      if (i === word.length - 1) return true;
+      const result =
+        dfs(row - 1, col, i + 1) ||
+        dfs(row + 1, col, i + 1) ||
+        dfs(row, col - 1, i + 1) ||
+        dfs(row, col + 1, i + 1);
+
+      visited.delete(`${row}-${col}`);
+      return result;
+    } else {
       return false;
-
-    // we found a char!
-    visited.add(coords);
-
-    const result =
-      dfs(i + 1, j, letterIndex + 1) ||
-      dfs(i - 1, j, letterIndex + 1) ||
-      dfs(i, j + 1, letterIndex + 1) ||
-      dfs(i, j - 1, letterIndex + 1);
-
-    visited.delete(coords);
-
-    return result;
+    }
   };
 
-  for (let i = 0; i <= rows; i++) {
-    for (let j = 0; j <= columns; j++) {
-      console.log(i, j);
-      if (dfs(i, j, 0) === true) return true;
+  const withinBounds = (row, col) =>
+    row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
+
+  // loop over each item and execute search if we have a letter match
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      if (!visited.has(`${row}-${col}`) && grid[row][col] === word[0]) {
+        if (dfs(row, col, 0)) return true;
+      }
     }
   }
 

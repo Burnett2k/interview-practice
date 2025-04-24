@@ -1,10 +1,7 @@
 // 🏝️ The Islands Problem (Number of Islands)
-
 // Problem Statement
-
-// You are given an n x m grid consisting of 1s (land) and 0s (water). An island is a group of 1s connected horizontally or vertically. Count the number of islands in the grid.
-
-// challenge: traverse the grid from a specific point in a Depth-first fashion.
+// You are given an n x m grid consisting of 1s (land) and 0s (water).
+// An island is a group of 1s connected horizontally or vertically. Count the number of islands in the grid.
 
 const grid = [
   [1, 1, 0, 0, 0],
@@ -14,54 +11,89 @@ const grid = [
 ];
 
 // orchestrator
-const countIslands = (grid, x = 0, y = 0) => {
-  // finds the boundaries of a current island.
+const countIslandsDfs = (grid) => {
+  // dfs solution
+  let islandCount = 0;
   const visited = new Set();
-  let numIslands = 0;
 
-  const bfs = (x, y) => {
-    let queue = [[x, y]];
+  // dfs function
+  const dfs = (row, col) => {
+    // base cases: within bounds, 0
+    if (
+      row >= 0 &&
+      row < grid.length &&
+      col >= 0 &&
+      col < grid[0].length &&
+      grid[row][col] === 1 &&
+      !visited.has(`${row}-${col}`)
+    ) {
+      visited.add(`${row}-${col}`);
+      // top, down, left, right
+      dfs(row - 1, col);
+      dfs(row + 1, col);
+      dfs(row, col - 1);
+      dfs(row, col + 1);
+    }
+
+    // check if we're on an island
+  };
+
+  // loop through grid and run dfs
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      // start dfs if we hit an unvisited island
+      if (grid[row][col] === 1 && !visited.has(`${row}-${col}`)) {
+        islandCount++;
+        dfs(row, col);
+      }
+    }
+  }
+
+  return islandCount;
+};
+
+const countIslandsBfs = (grid) => {
+  // bfs solution
+  const visited = new Set();
+  let islandCount = 0;
+  const bfs = (grid, row = 0, col = 0) => {
+    const queue = [[row, col]];
 
     while (queue.length) {
-      const node = queue.shift();
-      const x = node[0];
-      const y = node[1];
+      // add valid items to the queue
+      const [row, col] = queue.shift();
 
-      // push neighbors into queue if they are unvisited
       if (
-        !withinBounds(x, y, grid) ||
-        visited.has(`${x}-${y}`) ||
-        grid[x][y] === 0
+        row >= 0 &&
+        row < grid.length &&
+        col >= 0 &&
+        col < grid[0].length &&
+        grid[row][col] === 1 &&
+        !visited.has(`${row}-${col}`)
       ) {
-        console.log("we found water, an invalid boundary, or whatevs");
-      } else {
-        visited.add(`${x}-${y}`);
-        console.log(`visiting ${x}-${y}`);
-        if (withinBounds(x - 1, y, grid) && grid[x - 1][y] === 1)
-          queue.push([x - 1, y]); // top, bottom, right, left
-        if (withinBounds(x + 1, y, grid) && grid[x + 1][y] === 1)
-          queue.push([x + 1, y]); // top, bottom, right, left
-        if (withinBounds(x, y + 1, grid) && grid[x][y + 1] === 1)
-          queue.push([x, y + 1]); // top, bottom, right, left
-        if (withinBounds(x, y - 1, grid) && grid[x][y - 1] === 1)
-          queue.push([x, y - 1]); // top, bottom, right, left
+        visited.add(`${row}-${col}`);
+        queue.push(
+          [row - 1, col],
+          [row + 1, col],
+          [row, col - 1],
+          [row, col + 1]
+        );
       }
     }
   };
 
-  for (let i = 0; i < grid.length - 1; i++) {
-    for (let j = 0; j < grid[0].length - 1; j++) {
-      if (grid[i][j] === 1 && !visited.has(`${i}-${j}`)) {
-        numIslands++;
-        bfs(i, j);
+  // loop through grid and run dfs
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      // start dfs if we hit an unvisited island
+      if (grid[row][col] === 1 && !visited.has(`${row}-${col}`)) {
+        islandCount++;
+        bfs(grid, row, col);
       }
     }
   }
-  return numIslands;
+
+  return islandCount;
 };
 
-const withinBounds = (x, y, grid) => {
-  return !(x < 0 || x > grid.length - 1 || y > grid[0].length - 1 || y < 0);
-};
-
-console.log(countIslands(grid));
+console.log(countIslandsBfs(grid));
