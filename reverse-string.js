@@ -2,7 +2,7 @@ const reverseString = (a) => {
   return a.split("").reverse().join("");
 };
 
-const reverseStringWithoutReverse = (a) => {
+const reverseStringWithoutBuiltins = (a) => {
   // swapping?
   let start = 0;
   let end = a.length - 1;
@@ -23,4 +23,4 @@ const reverseStringWithoutReverse = (a) => {
 
 const TEST_STRING = "blah";
 // console.log(reverseString(TEST_STRING)); // expected halb
-console.log(reverseStringWithoutReverse(TEST_STRING)); // expected halb
+console.log(reverseStringWithoutBuiltins(TEST_STRING)); // expected halb
