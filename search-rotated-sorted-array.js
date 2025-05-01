@@ -4,25 +4,27 @@ const search = (nums, t) => {
 
   while (l <= r) {
     const pivot = Math.floor((l + r) / 2);
-    if (nums[pivot] === t) return pivot; // if pivot is target, then return pivot index
 
-    if (nums[l] <= nums[pivot]) {
-      // we're in the left-sorted portion
+    if (nums[pivot] === t) return pivot;
+
+    if (nums[l] < nums[pivot]) {
+      // left sorted
+      // is value on left or right side?
+
       if (t >= nums[l] && t < nums[pivot]) {
-        // it is on the left side, so search left
-        // check if target lies in that side
+        // search left
         r = pivot - 1;
       } else {
         // search right
         l = pivot + 1;
       }
     } else {
-      // we're in the right sorted portion
+      // right sorted
       if (t > nums[pivot] && t <= nums[r]) {
-        // search right half
+        // search right
         l = pivot + 1;
       } else {
-        // search left half
+        // search left
         r = pivot - 1;
       }
     }
@@ -30,6 +32,7 @@ const search = (nums, t) => {
 
   return -1; // didn't find anything
 };
+
 console.log(search([3, 4, 1, 2], 3)); // 0
 console.log(search([1, 2, 3, 4], 1)); // 0
 console.log(search([4, 1, 2, 3], 2)); // 2
