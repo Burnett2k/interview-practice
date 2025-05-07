@@ -32,7 +32,37 @@ var threeSumBruteForce = function (nums) {
   return triplets;
 };
 
-const testFunc = threeSumBruteForce;
+const threeSumBetter = (nums) => {
+  nums.sort((a, b) => a - b);
+  console.log(nums);
+  const ans = [];
+
+  // choose first number
+  for (let i = 0; i < nums.length; i++) {
+    // run two sum on the remainder
+    let l = i + 1; // left most number that is not i
+    let r = nums.length - 1; // right most number that is not i
+
+    while (l < r) {
+      if (i === l) l++;
+      if (i === r) r--;
+      if (nums[i] + nums[l] + nums[r] === 0) {
+        ans.push([nums[i], nums[l], nums[r]]);
+        l++;
+        while (nums[l] === nums[l - 1] && l < r) {
+          l++;
+        }
+      } else if (nums[l] + nums[r] > 0) {
+        r--;
+      } else {
+        l++;
+      }
+    }
+  }
+  return ans;
+};
+
+const testFunc = threeSumBetter;
 
 console.log(testFunc([-1, 0, 1, 2, -1, -4])); // [[-1,-1,2],[-1,0,1]]
 console.log(testFunc([0, 1, 1])); // []
