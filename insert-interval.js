@@ -6,41 +6,40 @@
 
 // Your task is to insert the new interval into the list and merge any overlapping intervals if necessary.
 //insertInterval([[1,2], [3,5], [6,7], [8,10], [12,16]], [4,8]) => [[1,2], [3,10], [12,16]]
+//insertInterval([[1,2], [3,8]) => [[1,2], [3,10], [12,16]]
 
 const insertInterval = (intervals, interval) => {
-  // we won't ever have to merge intervals from the original list, unless we merge from the new interval first
-  // start with a new array, and try to do in place later on.
-  console.log("hi");
-  let mergedIntervals = [];
-  let i = 0;
-  let n = intervals.length;
+  let beg = [];
+  let merged = [];
+  let end = [];
 
-  // push in pre merged intervals
-  while (i < n && intervals[i][1] < interval[0]) {
-    mergedIntervals.push(intervals[i]);
-    i++;
+  // loop through intervals and add to beg until we detect an overlap
+  let curr = 0;
+  while (curr < intervals.length && intervals[curr][1] < interval[0]) {
+    beg.push(intervals[curr]);
+    curr++;
   }
 
-  // calculate new interval (if necessary)
-  while (i < n && intervals[i][0] <= interval[1]) {
-    interval[0] = Math.min(intervals[i][0], interval[0]);
-    interval[1] = Math.max(intervals[i][1], interval[1]);
-    i++;
+  while (curr < intervals.length && intervals[curr][0] <= interval[1]) {
+    // keep merging until there's no longer an overlap
+    interval[0] = Math.min(intervals[curr][0], interval[0]);
+    interval[1] = Math.max(intervals[curr][1], interval[1]);
+    curr++;
   }
-  mergedIntervals.push(interval);
+  merged.push(interval);
 
-  // add remaining intervals
-  while (i < n) {
-    mergedIntervals.push(intervals[i]);
-    i++;
+  // addd the remaining items
+  while (curr < intervals.length) {
+    end.push(intervals[curr]);
+    curr++;
   }
 
-  return mergedIntervals;
+  return beg.concat(merged, end);
 };
 
 // ✅ Test Cases
 console.log(
-  insertInterval(
+  ...insertInterval(
     [
       [1, 2],
       [3, 5],
@@ -53,7 +52,7 @@ console.log(
 ); // [[1,2], [3,10], [12,16]]
 
 console.log(
-  insertInterval(
+  ...insertInterval(
     [
       [1, 3],
       [6, 9],
@@ -63,7 +62,7 @@ console.log(
 ); // [[1,5], [6,9]]
 
 console.log(
-  insertInterval(
+  ...insertInterval(
     [
       [1, 2],
       [3, 5],
